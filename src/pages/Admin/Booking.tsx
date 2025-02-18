@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { fetchBookingAction } from "../../redux/action/Booking"
+import { updateBookingStatusAction } from '../../redux/action/updateBooking';
 import { SidebarProvider, SidebarTrigger, SidebarInset, } from "@/components/ui/sidebar"
 import { SideBar } from "@/AppComponent/sideBar"
 import { ModeToggle } from '@/AppComponent/mode-toggle'
@@ -18,6 +19,7 @@ import { Bookings } from '../../types/types';
 import { AppDispatch, RootState } from '../../redux/store';
 import Search from "@/AppComponent/search"
 import { useToast } from "@/hooks/use-toast"
+import { unwrapResult } from '@reduxjs/toolkit';
 
 export default function Booking() {
     return (
@@ -71,8 +73,25 @@ export const BookingsContent = () => {
         setSearchQuery(value);
     };
 
-    const handleStatusChange = (id: any, newStatus: any) => {
-        console.log(id, newStatus)
+    const handleStatusChange = async (id: string, newStatus: string) => {
+        let formDataToSend = {
+            id: id,
+            formData: { status: newStatus }
+        };
+        try {
+            const resultAction = await dispatch(updateBookingStatusAction(formDataToSend));
+            unwrapResult(resultAction);
+            const successMessage = resultAction.payload?.message || 'Property Updated successfully!';
+            toast({
+                description: successMessage,
+            });
+        } catch (error: any) {
+            const errorMessage = error?.message || 'Failed to update property!';
+            toast({
+                variant: "destructive",
+                description: errorMessage,
+            })
+        }
     }
 
     const formDate = (dateString: string) => {
@@ -99,7 +118,7 @@ export const BookingsContent = () => {
                             <TableHead>Check In Date</TableHead>
                             <TableHead>Check Out Date</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead className="text-end" >Action</TableHead>
+                            <TableHead className="text-center" >Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -131,21 +150,9 @@ export const BookingsContent = () => {
                                     <TableCell>{formDate(booking.checkOutDate)}</TableCell>
                                     <TableCell>{booking.status}</TableCell>
                                     <TableCell className="text-center">
-                                        <div className="flex gap-2 items-center justify-end">
-                                            {booking.status === "Confirmed" && (
-                                                <Button
-                                                    onClick={() => handleStatusChange(booking.id, "Canceled")}
-                                                    variant="destructive"
-                                                >
-                                                    Cancel
-                                                </Button>
-                                            )}
-                                            {booking.status === "Canceled" && (
-                                                <Button
-                                                    onClick={() => handleStatusChange(booking.id, "Confirmed")}
-                                                >
-                                                    Confirm
-                                                </Button>
+                                        <div className="flex gap-2 items-center justify-center">
+                                            {(booking.status === "Confirmed" || booking.status === "Canceled") && (
+                                                <h1>-</h1>
                                             )}
                                             {booking.status === "Pending" && (
                                                 <>

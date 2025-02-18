@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { updateUserAction } from "../action/updateBooking"
+import { updateBookingStatusAction } from "../action/updateBooking"
 
 const initialState = {
     user: null,
@@ -7,25 +7,24 @@ const initialState = {
     error: null,
 }
 
-const updateUserSlice = createSlice({
-    name: 'updateUser',
+const updateBookingStatus = createSlice({
+    name: 'updateBookingStatus',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(updateUserAction.pending, (state) => {
+            .addCase(updateBookingStatusAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateUserAction.fulfilled, (state, action) => {
+            .addCase(updateBookingStatusAction.fulfilled, (state) => {
                 state.loading = false;
-                state.user = action.payload.user;
             })
-            .addCase(updateUserAction.rejected, (state, action) => {
+            .addCase(updateBookingStatusAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as any;
             });
     },
 })
 
-export default updateUserSlice.reducer
+export default updateBookingStatus.reducer

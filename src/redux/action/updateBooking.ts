@@ -4,10 +4,10 @@ import tokenHeaders from '@/AppComponent/token';
 import { fetchBookingAction } from "./Booking"
 
 
-export const updateUserAction = createAsyncThunk('updateUser', async ({ id, formData }: { id: { uuid: string }; formData: { name: string; email: string; phoneNumber: string; role: string } },
+export const updateBookingStatusAction = createAsyncThunk('updateBookingStatus', async ({ id, formData }: { id: string ; formData: { status:string } },
     { dispatch, rejectWithValue }) => {
     try {
-        const response = await API.put(`user/updateUser/${id.uuid}`, formData,
+        const response = await API.put(`booking/updateBooking/${id}`, formData,
             {
                 headers: tokenHeaders()
             });

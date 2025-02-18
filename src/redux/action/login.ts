@@ -1,22 +1,25 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../utils/api';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+import { NavigateFunction } from 'react-router-dom';
 
-export const loginAction = createAsyncThunk('authentication', async (formData: { email: string; password: string }, { rejectWithValue }) =>{
-    try{
-        const response = await API.post("auth/login",formData);
-        const {token } = response.data;
+export const loginAction = createAsyncThunk('loginWithGoogle', async ({ token, navigate }: { token: string, navigate: NavigateFunction }, { rejectWithValue }) => {
+    try {
+        const response = await API.post("auth/callback", {
+            accessToken: token
+        });
+        const { token: accessToken } = response.data;
 
-        // Decode the token
-        const decoded= jwtDecode(token);
-        localStorage.setItem('token', token);
+        const decoded = jwtDecode(accessToken);
+        localStorage.setItem('token', accessToken);
         localStorage.setItem('user', JSON.stringify(decoded));
-        
-        return response.data;
-    }catch (error:any) {
+        navigate('admin/booking');
+        return { accessToken, user: decoded };
+
+    } catch (error: any) {
         return rejectWithValue(
             error.response?.data?.message || 'An unexpected error occurred.'
-          );
+        );
     }
-    
+
 })

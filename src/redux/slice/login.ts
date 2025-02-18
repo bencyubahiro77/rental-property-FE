@@ -2,9 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import { loginAction } from "../action/login"
 
 const initialState = {
+    token: null,
     user: null,
     loading: false,
-    error: null,
+    error: null
 }
 
 const loginSlice = createSlice({
@@ -19,7 +20,7 @@ const loginSlice = createSlice({
             })
             .addCase(loginAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload.user;
+                state.token = action.payload.accessToken;
             })
             .addCase(loginAction.rejected, (state, action) => {
                 state.loading = false;

@@ -68,7 +68,6 @@ export const PropertyContent = () => {
 
     useEffect(() => {
         dispatch(fetchPropertiesAction());
-        
     }, [dispatch]);
 
     const filteredPropeties = useMemo(() => {
@@ -169,7 +168,7 @@ export const PropertyContent = () => {
                                         ? `${property.description.slice(0, 10)}...`
                                         : property.description}
                                     </TableCell>
-                                    <TableCell>{property.pricePerNight}</TableCell>
+                                    <TableCell>$ {property.pricePerNight}</TableCell>
                                     <TableCell>{property.location}</TableCell>
                                     <TableCell>
                                         <div className="flex gap-2 items-center justify-center">

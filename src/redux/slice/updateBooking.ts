@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { updateUserAction } from "../action/updateUser"
+import { updateUserAction } from "../action/updateBooking"
 
 const initialState = {
     user: null,

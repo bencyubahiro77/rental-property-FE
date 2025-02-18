@@ -3,9 +3,9 @@ import API from '../../utils/api';
 import tokenHeaders from '@/AppComponent/token';
 
 
-export const fetchUsersAction = createAsyncThunk('fetchUser', async (page:number, { rejectWithValue }) =>{
+export const fetchBookingAction = createAsyncThunk('fetchBooking', async (_,{ rejectWithValue }) =>{
     try{
-        const response = await API.get(`/user/getallUser?page=${page}`,
+        const response = await API.get("/booking/getAllBookings",
             {headers: tokenHeaders()
         });
         return {data:response.data, total: response.data.total};

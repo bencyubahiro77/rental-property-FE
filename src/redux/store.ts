@@ -1,12 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import loginReducer from "./slice/login"
-import createUserSlice from "./slice/createUser"
+import createUserSlice from "./slice/createBooking"
 import createPropertySlice from "./slice/createProperty"
-import usersSlice from "./slice/users"
+import bookingsSlice from "./slice/bookings"
 import PropetiesSlice from "./slice/property"
-import deleteUsersSlice from "./slice/deleteUser"
 import deletePropertySlice from "./slice/deleteProperty"
-import updateUserSlice from "./slice/updateUser"
+import updateUserSlice from "./slice/updateBooking"
 import updatePropertySlice from "./slice/updateProperty"
 
 export const store = configureStore({
@@ -16,9 +15,8 @@ export const store = configureStore({
     updateUser: updateUserSlice,
     createProperty: createPropertySlice,
     updateProperty: updatePropertySlice,
-    users: usersSlice,
+    bookings: bookingsSlice,
     propetiess: PropetiesSlice,
-    deleteUser: deleteUsersSlice,
     deleteProperty: deletePropertySlice
   },
 })

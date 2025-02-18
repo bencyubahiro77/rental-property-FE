@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createUserAction } from "../action/createUser"
+import { createUserAction } from "../action/createBooking"
 
 const initialState = {
     user: null,

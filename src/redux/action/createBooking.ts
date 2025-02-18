@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../utils/api';
 import tokenHeaders from '@/AppComponent/token';
-import { fetchUsersAction } from "../../redux/action/users"
+import { fetchBookingAction } from "./Booking"
 
 
 export const createUserAction = createAsyncThunk('createUser', async (formData: { name: string; email: string, phoneNumber:string, role:string }, { dispatch,rejectWithValue }) =>{
@@ -9,7 +9,7 @@ export const createUserAction = createAsyncThunk('createUser', async (formData: 
         const response = await API.post("user/createUser",formData,
             {headers: tokenHeaders()
         });
-        dispatch(fetchUsersAction(1))
+        dispatch(fetchBookingAction())
         return response.data;
     }catch (error:any) {
         return rejectWithValue(

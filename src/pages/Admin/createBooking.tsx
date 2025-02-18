@@ -1,8 +1,8 @@
 "use client"
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createUserAction } from '../../redux/action/createUser';
-import { updateUserAction } from '../../redux/action/updateUser';
+import { createUserAction } from '../../redux/action/createBooking';
+import { updateUserAction } from '../../redux/action/updateBooking';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { SideBar } from "@/AppComponent/sideBar"
 import { ModeToggle } from '@/AppComponent/mode-toggle'

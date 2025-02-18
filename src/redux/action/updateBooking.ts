@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../utils/api';
 import tokenHeaders from '@/AppComponent/token';
-import { fetchUsersAction } from "../../redux/action/users"
+import { fetchBookingAction } from "./Booking"
 
 
 export const updateUserAction = createAsyncThunk('updateUser', async ({ id, formData }: { id: { uuid: string }; formData: { name: string; email: string; phoneNumber: string; role: string } },
@@ -11,7 +11,7 @@ export const updateUserAction = createAsyncThunk('updateUser', async ({ id, form
             {
                 headers: tokenHeaders()
             });
-        dispatch(fetchUsersAction(1))
+        dispatch(fetchBookingAction())
         return response.data;
     } catch (error: any) {
         return rejectWithValue(

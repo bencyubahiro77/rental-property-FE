@@ -33,7 +33,7 @@ const items = [
   },
   {
     title: "Booking",
-    url: "/admin/Booking",
+    url: "/admin/booking",
     icon: Users,
     allowedRoles: ['Admin',"Hosts"]
   },

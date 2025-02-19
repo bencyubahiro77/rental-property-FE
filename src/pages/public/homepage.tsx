@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPropertiesAction } from "../../redux/action/property"
+import { fetchPropertiesAction } from "../../redux/action/property";
 import { AppDispatch, RootState } from '../../redux/store';
 import NavBar from '@/AppComponent/navbar';
 import Footer from '@/AppComponent/footer';
 import { Properties } from '@/types/types';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { Button } from '@/components/ui/button';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -41,23 +42,24 @@ export const HomePage = () => {
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {property.map((property: Properties) => (
-            <div key={property.id} className={`flex flex-col gap-4 py-4 pr-4 transition-opacity ${status === "loading" ? "opacity-50" : "opacity-100"}`}>
+            <div key={property.id} className={`flex flex-col gap-2 py-2 pr-2 transition-opacity ${status === "loading" ? "opacity-50" : "opacity-100"}`}>
               <div className="rounded-xl bg-white dark:bg-color4 border overflow-hidden flex flex-col h-full relative">
                 <div className="h-1/2 relative">
                   <img src={property.propertyImage || ''} className="w-full h-full object-cover" />
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-black text-white px-4 py-2 rounded-md">
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-black text-white px-2 py-1 rounded-md">
                     $ {property.pricePerNight}
                   </div>
                 </div>
-                <div className="flex-1 pt-8">
-                  <h2 className="font-bold text-2xl text-center">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</h2>
-                </div>
-                <div className='flex justify-between items-center px-4 pb-4'>
-                  <h1>View more</h1>
-                  <h2 className="font-bold text-lg flex items-center">
-                    <FaMapMarkerAlt className="mr-2" />
+                <div className="flex-1 pt-10 px-2">
+                  <h2 className="font-bold text-lg text-center">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</h2>
+                  <h2 className="font-bold text-md flex items-center justify-center mt-2">
+                    <FaMapMarkerAlt className="mr-1" />
                     {property.location.charAt(0).toUpperCase() + property.location.slice(1)}
                   </h2>
+                </div>
+                <div className='flex justify-between items-center px-8 pb-6'>
+                  <h1 className="text-sm text-blue-500 cursor-pointer">View more</h1>
+                  <Button>Book</Button>
                 </div>
               </div>
             </div>

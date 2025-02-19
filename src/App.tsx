@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom"
 import Property from './pages/Admin/property'
 import Booking from './pages/Admin/Booking'
-import Home from './pages/Admin/Login'
+import Home from './pages/public/homepage'
+import AllProperty from "./pages/public/allProperty"
 import CreateAndUpdateProperty from "./pages/Admin/createandUpdateProperty"
 import { ThemeProvider } from "@/AppComponent/theme-provider"
 import ProtectedRoute from "./utils/protectedRoute"
@@ -17,7 +18,7 @@ const App: React.FC = () => {
       {
         <Routes>
           <Route path="/" element={<Home />} />
-
+          <Route path="allProperty" element={<AllProperty />} />
           {/* Protected routes by admin and hosts */}
           <Route element={<ProtectedRoute allowedRoles={['Admin', "Hosts"]} />}>
             <Route path="admin/booking" element={<Booking />} />

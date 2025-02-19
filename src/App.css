@@ -31,3 +31,66 @@
 html {
   font-family: 'Nunito Sans', sans-serif;
 }
+
+.mouse {
+  width: 25px;
+  height: 40px;
+  border: 2px solid #333;
+  border-radius: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mouse::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  border-radius: 50%;
+  animation: moveDownOnly 1s infinite linear;
+  -webkit-animation: moveDownOnly 1.3s infinite linear;
+}
+
+@keyframes moveDownOnly {
+  0% {
+    top: 7px;
+    opacity: 1;
+  }
+  50%, 100% {
+    top: 30px;
+    opacity: 0;
+  }
+}
+
+/* .hero::before{
+  background: url("https://i.pinimg.com/736x/f2/48/84/f24884c672138367d398e6a8c92b06c9.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+} */
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  top: 0;
+  position:fixed;
+  background-color: transparent; 
+  transition: background-color 0.3s ease; 
+  width: 100%;
+  z-index: 999;
+  border-bottom:  1px dotted #333;
+}
+.navbar.scrolled {
+  background-color: whitesmoke;
+}

@@ -1,4 +1,4 @@
-import { ChevronUp, Home, Book, Users, User2 } from "lucide-react"
+import { ChevronUp,Book, Users, User2 } from "lucide-react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import {
   Sidebar,

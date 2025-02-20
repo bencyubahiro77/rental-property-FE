@@ -13,7 +13,16 @@ export const loginAction = createAsyncThunk('loginWithGoogle', async ({ token, n
         const decoded = jwtDecode(accessToken);
         localStorage.setItem('token', accessToken);
         localStorage.setItem('user', JSON.stringify(decoded));
-        navigate('admin/booking');
+
+        const storedUser = localStorage.getItem('user');
+        const user = storedUser ? JSON.parse(storedUser) : null
+
+        if (user.role === "Hosts") {
+            navigate('admin/booking');
+        } else {
+            navigate('/')
+        };
+
         return { accessToken, user: decoded };
 
     } catch (error: any) {

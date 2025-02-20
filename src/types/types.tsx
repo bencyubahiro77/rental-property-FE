@@ -44,7 +44,7 @@ export interface BookingsState {
 
 export interface PropertiesState {
     properties: Record<number,Properties[]>;
-    totalBlogs: number;
+    totalProperties: number;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }

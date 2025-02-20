@@ -88,7 +88,7 @@ html {
   background-color: transparent; 
   transition: background-color 0.3s ease; 
   width: 100%;
-  z-index: 999;
+  z-index: 10;
   border-bottom:  1px dotted #333;
 }
 .navbar.scrolled {

@@ -16,28 +16,29 @@ import { Button } from "@/components/ui/button"
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
     const toggleMenu = () => {
         setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
     };
 
     const handleScroll = () => {
-        const navbar = document.querySelector('.navbar')as any;
+        const navbar = document.querySelector('.navbar') as any;
         const scrolled = window.pageYOffset > 0;
         if (scrolled) {
-          navbar.classList.add('scrolled');
+            navbar.classList.add('scrolled');
         } else {
-          navbar.classList.remove('scrolled');
+            navbar.classList.remove('scrolled');
         }
-      };
-      
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
-          window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
-      }, []);
+    }, []);
 
     useEffect(() => {
         // Check if the access token is in the URL after redirect
@@ -45,11 +46,18 @@ const NavBar: React.FC = () => {
         if (hash.includes('access_token')) {
             const token = new URLSearchParams(hash.substring(1)).get('access_token') as string;
             dispatch(loginAction({ token, navigate }));
+            setIsLoggedIn(true);
         }
     }, [dispatch, navigate]);
 
     const handleLogin = () => {
         window.location.href = "http://localhost:5000/auth/google";
+    }
+
+    const signOut = () => {
+        localStorage.clear();
+        setIsLoggedIn(false);
+        navigate("/")
     }
 
     return (
@@ -64,9 +72,9 @@ const NavBar: React.FC = () => {
                     </Link>
                 </h1>
                 <div>
-                    <div className="xl:hidden">
+                    <div className="md:hidden">
                         <button
-                            className=" secondary-color font-work-sans text-2xl "
+                            className="font-work-sans text-2xl "
                             onClick={toggleMenu}
                             aria-label="Toggle Menu"
                         >
@@ -77,7 +85,7 @@ const NavBar: React.FC = () => {
                     <div
                         data-testid="menu"
                         className={`${isMenuOpen ? 'block rounded-lg gradient' : 'hidden'
-                            } xl:flex items-center secondary-color gap-3 font-bold cursor-pointer list-none transition-all md:gradient ease-in-out duration-300 xl:space-x-4 xl:ml-3 absolute left-0 w-full xl:w-auto xl:static xl:h-auto xl:bg-transparent mt-2 xl:mt-0`}
+                            } md:flex items-center secondary-color gap-3 font-bold cursor-pointer list-none transition-all md:gradient ease-in-out duration-300 xl:space-x-4 xl:ml-3 absolute left-0 w-full md:w-auto md:static xl:h-auto xl:bg-transparent mt-2 xl:mt-0`}
                     >
                         <li className="y-6 xl:my-0 ml-4 mr-4 my-6">
                             <Link
@@ -99,27 +107,31 @@ const NavBar: React.FC = () => {
                         </li>
                     </div>
                 </div>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button>Join</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle className='text-center'>Join our Platform</DialogTitle>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                            <Button className="w-full" onClick={handleLogin}>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                                        fill="currentColor"
-                                    />
-                                </svg>
-                                Login with Google
-                            </Button>
-                        </div>
-                    </DialogContent>
-                </Dialog>
+                {isLoggedIn ? (
+                    <Button onClick={signOut}>Logout</Button>
+                ) : (
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button>Join</Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle className='text-center'>Join our Platform</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <Button className="w-full" onClick={handleLogin}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                                            fill="currentColor"
+                                        />
+                                    </svg>
+                                    Continue with Google
+                                </Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                )}
             </nav>
         </div>
     );

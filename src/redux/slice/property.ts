@@ -4,7 +4,7 @@ import { PropertiesState } from '../../types/types'
 
 const initialState: PropertiesState = {
     properties:[],
-    totalBlogs: 0,
+    totalProperties: 0,
     status: 'idle',
     error: null,
 }
@@ -21,7 +21,7 @@ const PropetiesSlice = createSlice({
             .addCase(fetchPropertiesAction.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.properties = action.payload.data.data;  
-                state.totalBlogs = action.payload.data.total; 
+                state.totalProperties = action.payload.data.total; 
             })
             
             .addCase(fetchPropertiesAction.rejected, (state, action) => {

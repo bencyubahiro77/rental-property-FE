@@ -4,7 +4,7 @@ import { SearchProps } from "@/types/types"
 const Search: React.FC<SearchProps> = ({ query, onSearch }) => {
  return(
     <div>
-       <Input placeholder="search..." className="w-72" value={query} onChange={(e) => onSearch(e.target.value)} />
+       <Input placeholder="Search..." className="w-72" value={query} onChange={(e) => onSearch(e.target.value)} />
     </div>
  )
 }

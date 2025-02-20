@@ -5,7 +5,7 @@ import {fetchPropertiesAction} from "./property"
 
 
 export const updatePropertyAction = createAsyncThunk(
-    'updateBlog',
+    'updateProperty',
     async ( { id, formData }: {id: { id: string },formData: { title: string; description: string; propertyImage: File | null; pricePerNight: string, location: string }}, {dispatch, rejectWithValue }) => {
       try {
         const data = new FormData(); 

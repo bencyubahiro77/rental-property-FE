@@ -1,31 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createUserAction } from "../action/createBooking"
+import { createBookingAction } from "../action/createBooking"
 
 const initialState = {
-    user: null,
+    booking: null,
     loading: false,
     error: null,
 }
 
-const createUserSlice = createSlice({
-    name: 'createUser',
+const createBookingSlice = createSlice({
+    name: 'createBooking',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(createUserAction.pending, (state) => {
+            .addCase(createBookingAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createUserAction.fulfilled, (state, action) => {
+            .addCase(createBookingAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload.user;
+                state.booking = action.payload.booking;
             })
-            .addCase(createUserAction.rejected, (state, action) => {
+            .addCase(createBookingAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as any;
             });
     },
 })
 
-export default createUserSlice.reducer
+export default createBookingSlice.reducer

@@ -4,9 +4,9 @@ import tokenHeaders from '@/AppComponent/token';
 import { fetchBookingAction } from "./Booking"
 
 
-export const createUserAction = createAsyncThunk('createUser', async (formData: { name: string; email: string, phoneNumber:string, role:string }, { dispatch,rejectWithValue }) =>{
+export const createBookingAction = createAsyncThunk('createBooking', async (formData: { propertyId: string; checkInDate: string, checkOutDate:string}, { dispatch,rejectWithValue }) =>{
     try{
-        const response = await API.post("user/createUser",formData,
+        const response = await API.post("booking/createBooking",formData,
             {headers: tokenHeaders()
         });
         dispatch(fetchBookingAction())

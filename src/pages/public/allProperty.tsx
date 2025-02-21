@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPropertiesAction } from "../../redux/action/property";
+import { createBookingAction } from "../../redux/action/createBooking";
 import { AppDispatch, RootState } from '../../redux/store';
 import NavBar from '@/AppComponent/navbar';
 import Footer from '@/AppComponent/footer';
 import { Properties } from '@/types/types';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
-import { Slider } from "@/components/ui/slider"
+import { Slider } from "@/components/ui/slider";
 import {
     Dialog,
     DialogContent,
@@ -15,21 +16,52 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Label } from '@/components/ui/label';
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 import Search from '@/AppComponent/search';
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { unwrapResult } from '@reduxjs/toolkit';
+import { Loader2 } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
-const allProperty = () => {
-    type SliderProps = React.ComponentProps<typeof Slider>
+const dateSchema = z.object({
+    checkInDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
+        message: "Invalid check-in date",
+    }),
+    checkOutDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
+        message: "Invalid check-out date",
+    })
+});
+
+const AllProperty = () => {
+    type SliderProps = React.ComponentProps<typeof Slider>;
     const [searchQuery, setSearchQuery] = useState("");
     const [priceRange, setPriceRange] = useState([0, 2000]);
-    const [checkInDate, setCheckInDate] = useState('');
-    const [checkOutDate, setCheckOutDate] = useState('');
+    const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
 
     const dispatch = useDispatch<AppDispatch>();
-    const { toast } = useToast()
+    const { toast } = useToast();
     const { properties, status } = useSelector((state: RootState) => state.propetiess);
+    const loading = useSelector((state: RootState) => state.createBooking.loading);
     const property = Object.values(properties).flat() || [];
+
+    const form = useForm<z.infer<typeof dateSchema>>({
+        resolver: zodResolver(dateSchema),
+        defaultValues: {
+            checkInDate: "",
+            checkOutDate: "",
+        },
+    });
 
     useEffect(() => {
         dispatch(fetchPropertiesAction());
@@ -48,7 +80,7 @@ const allProperty = () => {
 
     const handleSearch = (value: string) => {
         setSearchQuery(value);
-    }
+    };
 
     const handlePriceChange = (value: number[]) => {
         setPriceRange(value);
@@ -57,7 +89,6 @@ const allProperty = () => {
     const handleBookClick = () => {
         const token = localStorage.getItem('token');
         if (!token) {
-            ;
             toast({
                 variant: "destructive",
                 description: 'Login first',
@@ -67,10 +98,26 @@ const allProperty = () => {
         return true;
     };
 
-    const handleSubmit = (propertyId: string) => {
-        console.log(`Property ID: ${propertyId}`);
-        console.log(`Check-In Date: ${checkInDate}`);
-        console.log(`Check-Out Date: ${checkOutDate}`);
+    const handleSubmit = async (values: z.infer<typeof dateSchema>) => {
+        try {
+            if (!selectedPropertyId) return;
+            let formDataToSend = {
+                ...values,
+                propertyId: selectedPropertyId,
+            };
+            const resultAction = await dispatch(createBookingAction(formDataToSend));
+            unwrapResult(resultAction);
+            const successMessage = resultAction.payload?.message || 'Property created successfully!';
+            toast({
+                description: successMessage,
+            });
+            form.reset();
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                description: 'An unexpected error occurred.',
+            });
+        }
     };
 
     return (
@@ -153,24 +200,56 @@ const allProperty = () => {
                                             <Dialog>
                                                 <DialogTrigger asChild>
                                                     <Button onClick={(e) => {
-                                                        if (!handleBookClick()) e.preventDefault();
+                                                        if (!handleBookClick()) {
+                                                            e.preventDefault();
+                                                        } else {
+                                                            setSelectedPropertyId(property.id);
+                                                        }
                                                     }}>Book</Button>
                                                 </DialogTrigger>
                                                 <DialogContent className="max-w-md">
                                                     <DialogHeader>
                                                         <DialogTitle className="text-2xl font-bold">Book {property.title}</DialogTitle>
                                                     </DialogHeader>
-                                                    <div className="flex flex-col gap-4">
-                                                        <div>
-                                                            <Label className='font-bold'>Check-In</Label>
-                                                            <input type="date" className="w-full border rounded-md p-2" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} />
-                                                        </div>
-                                                        <div>
-                                                            <Label className='font-bold'>Check-Out</Label>
-                                                            <input type="date" className="w-full border rounded-md p-2" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} />
-                                                        </div>
-                                                        <Button onClick={() => handleSubmit(property.id)}>Submit</Button>
-                                                    </div>
+                                                    <Form {...form}>
+                                                        <form onSubmit={form.handleSubmit(handleSubmit)}>
+                                                            <div className="flex flex-col gap-4">
+                                                                <div>
+                                                                    <FormField
+                                                                        control={form.control}
+                                                                        name="checkInDate"
+                                                                        render={({ field }) => (
+                                                                            <FormItem>
+                                                                                <FormLabel className='font-bold'>Check-In</FormLabel>
+                                                                                <FormControl>
+                                                                                    <input type="date" className="w-full border rounded-md p-2"  {...field} />
+                                                                                </FormControl>
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <FormField
+                                                                        control={form.control}
+                                                                        name="checkOutDate"
+                                                                        render={({ field }) => (
+                                                                            <FormItem>
+                                                                                <FormLabel className='font-bold'>Check-Out</FormLabel>
+                                                                                <FormControl>
+                                                                                    <input type="date" className="w-full border rounded-md p-2" {...field} />
+                                                                                </FormControl>
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}
+                                                                    />
+                                                                </div>
+                                                                <Button type='submit' disabled={loading}>
+                                                                    {loading ? <Loader2 className='animate-spin' /> : "Submit"}
+                                                                </Button>
+                                                            </div>
+                                                        </form>
+                                                    </Form>
                                                 </DialogContent>
                                             </Dialog>
                                         </div>
@@ -183,8 +262,7 @@ const allProperty = () => {
             </div>
             <Footer />
         </>
-
-    )
+    );
 }
 
-export default allProperty
+export default AllProperty;

@@ -32,7 +32,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Loader2 } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+
 
 const dateSchema = z.object({
     checkInDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
@@ -41,6 +41,18 @@ const dateSchema = z.object({
     checkOutDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
         message: "Invalid check-out date",
     })
+}).refine((data) => {
+    const checkIn = new Date(data.checkInDate);
+    const checkOut = new Date(data.checkOutDate);
+
+    // Check if check-out date is before check-in date
+    if (checkOut < checkIn) {
+        return false; 
+    }
+    return true;
+}, {
+    message: "Check-out date cannot be before check-in date",
+    path: ["checkOutDate"], 
 });
 
 const AllProperty = () => {
@@ -101,24 +113,27 @@ const AllProperty = () => {
     const handleSubmit = async (values: z.infer<typeof dateSchema>) => {
         try {
             if (!selectedPropertyId) return;
+    
             let formDataToSend = {
                 ...values,
                 propertyId: selectedPropertyId,
             };
+    
             const resultAction = await dispatch(createBookingAction(formDataToSend));
-            unwrapResult(resultAction);
-            const successMessage = resultAction.payload?.message || 'Property created successfully!';
+            const bookingData = unwrapResult(resultAction); // Will throw if rejected
+    
             toast({
-                description: successMessage,
+                description: bookingData?.message || "Booking created successfully!",
             });
+    
             form.reset();
-        } catch (error) {
+        } catch (error: any) {
             toast({
                 variant: "destructive",
-                description: 'An unexpected error occurred.',
+                description: error || "An unexpected error occurred.",
             });
         }
-    };
+    };        
 
     return (
         <>

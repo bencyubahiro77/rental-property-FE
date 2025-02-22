@@ -18,7 +18,7 @@ export const loginAction = createAsyncThunk('loginWithGoogle', async ({ token, n
         const user = storedUser ? JSON.parse(storedUser) : null
 
         if (user.role === "Hosts") {
-            navigate('admin/booking');
+            navigate('admin/property');
         } else {
             navigate('/')
         };

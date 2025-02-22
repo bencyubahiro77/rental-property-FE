@@ -85,12 +85,12 @@ const NavBar: React.FC = () => {
                     <div
                         data-testid="menu"
                         className={`${isMenuOpen ? 'block rounded-lg gradient' : 'hidden'
-                            } md:flex items-center secondary-color gap-3 font-bold cursor-pointer list-none transition-all md:gradient ease-in-out duration-300 xl:space-x-4 xl:ml-3 absolute left-0 w-full md:w-auto md:static xl:h-auto xl:bg-transparent mt-2 xl:mt-0`}
+                            } md:flex items-center gap-3 font-bold cursor-pointer list-none transition-all md:gradient ease-in-out duration-300 xl:space-x-4 xl:ml-3 absolute left-0 w-full md:w-auto md:static xl:h-auto xl:bg-transparent mt-2 xl:mt-0`}
                     >
                         <li className="y-6 xl:my-0 ml-4 mr-4 my-6">
                             <Link
                                 to="/"
-                                className="my-6 no-underline secondary-color text-[#170e7d] font-bold xl:my-0 hover:text-[#170e7d]"
+                                className="my-6 no-underline text-white font-bold xl:my-0 hover:underline "
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Home
@@ -99,7 +99,7 @@ const NavBar: React.FC = () => {
                         <li className="y-6 xl:my-0 ml-4 my-8 ">
                             <Link
                                 to="/allProperty"
-                                className="my-6 no-underline secondary-color text-[#170e7d] font-bold xl:my-0 hover:text-[#170e7d]"
+                                className="my-6 no-underline  text-white font-bold xl:my-0 hover:underline"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Property
@@ -108,11 +108,11 @@ const NavBar: React.FC = () => {
                     </div>
                 </div>
                 {isLoggedIn ? (
-                    <Button onClick={signOut}>Logout</Button>
+                    <Button onClick={signOut} className='bg-transpalent' >Logout</Button>
                 ) : (
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button>Join</Button>
+                            <Button className='bg-green-700 text-white'>Join</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>

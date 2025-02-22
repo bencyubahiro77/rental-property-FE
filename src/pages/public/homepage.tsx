@@ -29,12 +29,12 @@ export const HomePage = () => {
     <>
       <NavBar />
       <div className='hero h-[100vh]'>
-        <div className='relative top-1/2 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 md:max-w-5xl md:w-11/12 text-center'>
+        <div className='relative top-1/2 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 md:max-w-5xl md:w-11/12 text-center text-white'>
           <h4 className='font-extrabold xl:text-6xl tracking-widest text-[3.5rem] pt-40 '> BENO RENTAL BOOKING PROPERTY </h4>
           <p className='mt-12 leading-6 xl:text-2xl text-xl w-full pr-3 pl-3 xl:pr-44 xl:pl-44'>
             Your next home away from home is just a click away!
           </p>
-          <div className='flex w-full justify-center items-center mt-32'>
+          <div className='flex w-full justify-center items-center mt-32 text-white'>
             <div className="mouse"></div>
           </div>
         </div>
@@ -60,7 +60,7 @@ export const HomePage = () => {
                 </div>
                 <div className="flex-1 pt-10 px-2">
                   <h2 className="font-bold text-lg text-center">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</h2>
-                  <h2 className="font-bold text-md flex items-center justify-center mt-2">
+                  <h2 className=" text-md flex items-center justify-center mt-2">
                     <FaMapMarkerAlt className="mr-1" />
                     {property.location.charAt(0).toUpperCase() + property.location.slice(1)}
                   </h2>

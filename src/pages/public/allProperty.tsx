@@ -178,7 +178,7 @@ const AllProperty = () => {
                                         </div>
                                         <div className="flex-1 pt-10 px-2">
                                             <h2 className="font-bold text-lg text-center">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</h2>
-                                            <h2 className="font-bold text-md flex items-center justify-center mt-2">
+                                            <h2 className="text-md flex items-center justify-center mt-2">
                                                 <FaMapMarkerAlt className="mr-1" />
                                                 {property.location.charAt(0).toUpperCase() + property.location.slice(1)}
                                             </h2>

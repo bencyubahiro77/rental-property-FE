@@ -69,12 +69,12 @@ export const HomePage = () => {
                   <Dialog>
                     <DialogTrigger className='text-sm text-blue-500 cursor-pointer'>View more</DialogTrigger>
                     <DialogContent className="max-w-3xl">
-                      <DialogHeader>
-                        <DialogTitle className="text-2xl font-bold">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</DialogTitle>
-                      </DialogHeader>
                       <div className="flex flex-col md:flex-row">
                         <img src={property.propertyImage || ''} className="w-full md:w-1/2 h-60 object-cover rounded-lg" />
-                        <div className="p-4 md:pl-8">
+                        <div className="p-2 md:pl-8">
+                          <DialogHeader>
+                            <DialogTitle className="text-2xl font-bold">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</DialogTitle>
+                          </DialogHeader>
                           <div>
                             <Label className='font-bold'>Price</Label>
                             <h2 className="text-sm mb-2">${property.pricePerNight}/Night</h2>

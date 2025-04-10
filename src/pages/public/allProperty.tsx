@@ -47,12 +47,12 @@ const dateSchema = z.object({
 
     // Check if check-out date is before check-in date
     if (checkOut < checkIn) {
-        return false; 
+        return false;
     }
     return true;
 }, {
     message: "Check-out date cannot be before check-in date",
-    path: ["checkOutDate"], 
+    path: ["checkOutDate"],
 });
 
 const AllProperty = () => {
@@ -113,19 +113,19 @@ const AllProperty = () => {
     const handleSubmit = async (values: z.infer<typeof dateSchema>) => {
         try {
             if (!selectedPropertyId) return;
-    
+
             let formDataToSend = {
                 ...values,
                 propertyId: selectedPropertyId,
             };
-    
+
             const resultAction = await dispatch(createBookingAction(formDataToSend));
             const bookingData = unwrapResult(resultAction); // Will throw if rejected
-    
+
             toast({
                 description: bookingData?.message || "Booking created successfully!",
             });
-    
+
             form.reset();
         } catch (error: any) {
             toast({
@@ -133,7 +133,7 @@ const AllProperty = () => {
                 description: error || "An unexpected error occurred.",
             });
         }
-    };        
+    };
 
     return (
         <>
@@ -187,12 +187,12 @@ const AllProperty = () => {
                                             <Dialog>
                                                 <DialogTrigger className='text-sm text-blue-500 cursor-pointer'>View more</DialogTrigger>
                                                 <DialogContent className="max-w-3xl">
-                                                    <DialogHeader>
-                                                        <DialogTitle className="text-2xl font-bold">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</DialogTitle>
-                                                    </DialogHeader>
                                                     <div className="flex flex-col md:flex-row">
-                                                        <img src={property.propertyImage || ''} className="w-full md:w-1/2 h-60 object-cover rounded-lg" />
-                                                        <div className="p-4 md:pl-8">
+                                                        <img src={property.propertyImage || ''} className="w-full md:w-1/2 h-90 object-cover rounded-lg" />
+                                                        <div className="md:pl-8">
+                                                            <DialogHeader>
+                                                                <DialogTitle className="text-2xl font-bold">{property.title.charAt(0).toUpperCase() + property.title.slice(1)}</DialogTitle>
+                                                            </DialogHeader>
                                                             <div>
                                                                 <Label className='font-bold'>Price</Label>
                                                                 <h2 className="text-sm mb-2">${property.pricePerNight}/Night</h2>

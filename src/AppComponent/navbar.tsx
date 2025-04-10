@@ -110,7 +110,7 @@ const NavBar: React.FC = () => {
                 {isLoggedIn ? (
                     <Button onClick={signOut} className='bg-transpalent' >Logout</Button>
                 ) : (
-                    <Dialog>
+                    <Dialog >
                         <DialogTrigger asChild>
                             <Button className='bg-green-700 text-white'>Join</Button>
                         </DialogTrigger>

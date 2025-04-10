@@ -103,7 +103,7 @@ export const PropertyContent = () => {
                     description: successMessage,
                 });
             } catch (error: any) {
-                const errorMessage = error?.message || 'Failed to delete property';
+                const errorMessage = error?.message || 'Failed to delete the property';
                 toast({
                     variant: "destructive",
                     description: errorMessage,
